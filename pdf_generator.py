@@ -4,7 +4,9 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import os
 
-FONT_PATH = "/System/Library/Fonts/Supplemental/Arial.ttf"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FONT_PATH = os.path.join(BASE_DIR, "DejaVuSans.ttf")
+
 pdfmetrics.registerFont(TTFont("ArialRU", FONT_PATH))
 
 
@@ -27,8 +29,9 @@ def generate_pdf(
     car_series,
     status="ОТКРЫТ"
 ):
-    os.makedirs("archive", exist_ok=True)
-    file_path = f"archive/putevoy_{sheet_id}_{date}.pdf"
+    archive_dir = os.path.join(BASE_DIR, "archive")
+    os.makedirs(archive_dir, exist_ok=True)
+    file_path = os.path.join(archive_dir, f"putevoy_{sheet_id}_{date}.pdf")
 
     c = canvas.Canvas(file_path, pagesize=A4)
     width, height = A4
