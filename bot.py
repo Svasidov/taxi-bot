@@ -11,6 +11,9 @@ from keyboards import get_main_keyboard, get_edit_keyboard, get_drivers_keyboard
 from keyboards import get_drivers_keyboard
 
 from config import BOT_TOKEN, ADMIN_ID
+import threading
+from flask import Flask
+
 from db import (
     init_db,
     get_open_sheet,
@@ -1067,6 +1070,30 @@ async def main():
     await init_db()
     await dp.start_polling(bot)
 
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "Bot is running"
+
+def run_web():
+    app.run(host="0.0.0.0", port=10000)
 
 if __name__ == "__main__":
+    threading.Thread(target=run_web).start()
+    asyncio.run(main())
+import threading
+from flask import Flask
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Bot is running"
+
+def run_web():
+    app.run(host="0.0.0.0", port=10000)
+
+if __name__ == "__main__":
+    threading.Thread(target=run_web).start()
     asyncio.run(main())
